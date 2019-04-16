@@ -1,0 +1,23 @@
+{
+  "name": "nodereactnotes",
+  "version": "1.0.0",
+  "description": "Node and React to create Notes app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bigyam/NodeReactNotes.git"
+  },
+  "keywords": [
+    "react",
+    "node"
+  ],
+  "author": "Andrew Ruan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bigyam/NodeReactNotes/issues"
+  },
+  "homepage": "https://github.com/bigyam/NodeReactNotes#readme"
+}
