@@ -10,7 +10,7 @@ class ToDo {
 	}
 
 	static insert (toDo, callback) {
-		db.query('INSERT INTO toDoTable (title, completed) VALUES ($1, 0)', [toDo], function (err, res) {
+		db.query('INSERT INTO toDoTable (title, completed) VALUES ($1, false)', [toDo], function (err, res) {
 			if (err.error)
 				return callback(err);
 			callback(res);
