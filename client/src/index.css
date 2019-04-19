@@ -17,6 +17,10 @@ code {
 	text-align: center;
 }
 
+.toast{
+  margin: 0 auto;
+}
+
 .form-group {
 	width: 275px;
 	margin: 0px auto;

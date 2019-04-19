@@ -10,7 +10,6 @@ import {
   Input,
   InputGroupAddon,
   Button,
-  FormGroup,
   Toast,
   ToastHeader,
   ToastBody,
@@ -61,7 +60,7 @@ class App extends Component {
   renderToDoList = () => {
     return (this.state.toDoList.map((todoItem) => {
       return (
-        <Toast key={todoItem.id}>
+        <Toast key={todoItem.id} className="toast">
           <ToastHeader>{todoItem.completed === false && 'Incomplete'}
                        {todoItem.completed === true && 'Completed'}
           </ToastHeader>
@@ -80,8 +79,6 @@ class App extends Component {
     }else{
       isComplete = true;
     }
-    console.log(id);
-    console.log(isComplete);
     fetch('/api/todo', {
       method: 'put',
       headers: { 'Content-Type': 'application/json' },
@@ -111,7 +108,7 @@ class App extends Component {
               <p className="lead">List of things to do!</p>
             </Jumbotron>
 
-            <InputGroup>
+            <InputGroup size="sm">
               <Input
                 placeholder="Enter New To Do Item..."
                 value={ this.state.newToDo}

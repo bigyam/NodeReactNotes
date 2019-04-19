@@ -18,8 +18,6 @@ class ToDo {
 	}
 
 	static update (toDoId, completedBool, callback) {
-		console.log(toDoId);
-		console.log(completedBool);
 		db.query('UPDATE toDoTable SET completed = $1 WHERE id = $2', [completedBool, toDoId], function (err, res) {
 			if (err.error)
 				return callback(err);
