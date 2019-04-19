@@ -11,6 +11,9 @@ import {
   InputGroupAddon,
   Button,
   FormGroup,
+  Toast,
+  ToastHeader,
+  ToastBody,
   Col
 } from 'reactstrap';
 
@@ -19,9 +22,9 @@ class App extends Component {
     super(props);
 
     this.state = {
-      currentToDo: null,
-      toDoList: [],
-      newToDo: ''
+    currentToDo: null,
+    toDoList: [],
+    newToDo: ''
     };
   }
 
@@ -29,7 +32,7 @@ class App extends Component {
     fetch('/api/todo')
     .then(res => res.json())
     .then(res => {
-      var toDoList = res.map(r => r.title);
+      var toDoList = res; //map(r => r.title); //change this from title to whole object
       this.setState({ toDoList });
     });
   };
@@ -52,8 +55,44 @@ class App extends Component {
   };
 
   handleChangeCurrentToDo = (e) => {
-    this.setState({ currentToDo: e.target.value });
+    this.getToDoList();
   }
+
+  renderToDoList = () => {
+    return (this.state.toDoList.map((todoItem) => {
+      return (
+        <Toast key={todoItem.id}>
+          <ToastHeader>{todoItem.completed === false && 'Incomplete'}
+                       {todoItem.completed === true && 'Completed'}
+          </ToastHeader>
+          <ToastBody>
+            {todoItem.title} <br />
+          <Button color="primary" size="sm" onClick={e => this.handleComplete(todoItem.id, todoItem.completed)}>Toggle Complete</Button>
+          </ToastBody>
+        </Toast>
+      )
+    }))
+  };
+
+  handleComplete = (id, isComplete) => {
+    if (isComplete) {
+      isComplete = false;
+    }else{
+      isComplete = true;
+    }
+    console.log(id);
+    console.log(isComplete);
+    fetch('/api/todo', {
+      method: 'put',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toDoId: id, completedBool: isComplete })
+    })
+    .then(res => res.json())
+    .then(res => {
+      this.getToDoList();
+    });
+  }
+
 
   componentDidMount () {
     this.getToDoList();
@@ -78,7 +117,7 @@ class App extends Component {
                 value={ this.state.newToDo}
                 onChange={this.handleInputChange}
               />
-              <InputGroupAddon addontType="append">
+              <InputGroupAddon addonType="append">
                 <Button color="primary" onClick={this.handleAddToDo}>Add To Do</Button>
               </InputGroupAddon>
 
@@ -87,20 +126,12 @@ class App extends Component {
         </Row>
         <Row>
           <Col>
-
+            {this.renderToDoList()}
           </Col>
-        </Row>
+</Row>
         <Row>
           <Col>
-            <h1 className="display-5"> To Do List </h1>
-            <FormGroup>
-              <Input type="select" onChange={this.handleChangeCurrentToDo}>
-                { this.state.toDoList.length === 0 && <option>No to do added yet.</option> }
-                { this.state.toDoList.length > 0 && <option>Select a to to item.</option> }
-                { this.state.toDoList.map((todo, i) => <option key={i}>{todo}</option>) }
-              </Input>
-
-            </FormGroup>
+            
           </Col>
         </Row>
       </Container>
