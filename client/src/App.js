@@ -5,10 +5,10 @@ import {
   Navbar,
   NavbarBrand,
   Row,
-  Jumbotron,
   InputGroup,
   Input,
   InputGroupAddon,
+  ButtonGroup,
   Button,
   Toast,
   ToastHeader,
@@ -40,6 +40,12 @@ class App extends Component {
     this.setState( { newToDo: e.target.value });
   };
 
+  handleKeyPress = (target) => {
+    if (target.charCode === 13) {
+      this.handleAddToDo();
+    }
+  };
+
   handleAddToDo = () => {
     fetch('/api/todo', {
       method: 'post',
@@ -55,7 +61,7 @@ class App extends Component {
 
   handleChangeCurrentToDo = (e) => {
     this.getToDoList();
-  }
+  };
 
   renderToDoList = () => {
     return (this.state.toDoList.map((todoItem) => {
@@ -66,7 +72,12 @@ class App extends Component {
           </ToastHeader>
           <ToastBody>
             {todoItem.title} <br />
-          <Button color="primary" size="sm" onClick={e => this.handleComplete(todoItem.id, todoItem.completed)}>Toggle Complete</Button>
+          <ButtonGroup>
+            <Button color="primary" size="sm" onClick={e => this.handleComplete(todoItem.id, todoItem.completed)}>Toggle Complete</Button>
+          </ButtonGroup>
+          <ButtonGroup>
+            <Button color="primary" size="sm" onClick={e => this.handleRemove(todoItem.id)}>Remove</Button>
+          </ButtonGroup>
           </ToastBody>
         </Toast>
       )
@@ -88,12 +99,23 @@ class App extends Component {
     .then(res => {
       this.getToDoList();
     });
-  }
+  };
 
+  handleRemove = (id) => {
+    fetch('/api/todo', {
+      method: 'delete',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ toDoId: id })
+    })
+    .then(res => res.json())
+    .then(res => {
+      this.getToDoList();
+    });
+  };
 
   componentDidMount () {
     this.getToDoList();
-  }
+  };
 
   render() {
     return (
@@ -101,24 +123,27 @@ class App extends Component {
         <Navbar dark color="dark">
           <NavbarBrand href="/">To Do</NavbarBrand>
         </Navbar>
+        
         <Row>
           <Col>
-            <Jumbotron>
               <h1 className="display-3">To Do List</h1>
               <p className="lead">List of things to do!</p>
-            </Jumbotron>
-
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <InputGroup size="sm">
               <Input
                 placeholder="Enter New To Do Item..."
                 value={ this.state.newToDo}
                 onChange={this.handleInputChange}
+                onKeyPress={this.handleKeyPress}
               />
               <InputGroupAddon addonType="append">
                 <Button color="primary" onClick={this.handleAddToDo}>Add To Do</Button>
               </InputGroupAddon>
-
             </InputGroup>
+            <br />
           </Col>
         </Row>
         <Row>

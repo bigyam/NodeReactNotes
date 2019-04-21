@@ -24,6 +24,14 @@ class ToDo {
 			callback(res);
 		});
 	}
+
+	static delete (toDoId, callback) {
+		db.query('DELETE FROM toDoTable WHERE id = $1', [toDoId], function (err, res) {
+			if (err.error)
+				return callback(err);
+			callback(res);
+		});
+	}
 }
 
 module.exports = ToDo;

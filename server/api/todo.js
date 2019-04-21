@@ -32,4 +32,14 @@ router.put('/', function (req, res) {
 	});
 });
 
+router.delete('/', function (req, res) {
+	var toDoId = req.body.toDoId;
+	
+	ToDo.delete(toDoId, function (err, result) {
+		if (err)
+			return res.json(err);
+		return res.json(result);
+	});
+});
+
 module.exports = router;
