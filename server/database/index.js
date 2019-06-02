@@ -1,6 +1,6 @@
 var { Pool } = require('pg');
 
-const CONNECTION_STRING = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/toDodb';
+const CONNECTION_STRING = process.env.DATABASE_URL || 'postgresql://postgres:postgres@167.99.185.124:5432/toDodb';
 const SSL = process.env.NODE_ENV === 'production';
 
 class Database {
